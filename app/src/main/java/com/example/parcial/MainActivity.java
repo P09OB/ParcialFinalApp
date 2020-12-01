@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             pregunta = question.getPregunta();
                                             votantes = question.getVotantes();
                                             suma = question.getSumatoria();
-                                            Log.e("hholis",""+question.getPregunta()+"\n");
 
 
                                         }
@@ -107,34 +107,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int puntaje1 = Integer.parseInt(puntaje);
 
-        int numVotantes = Integer.parseInt(votantes)+1;
-        Log.e("votantes",""+numVotantes);
+        calificacion.setText("");
 
-        int numSuma = Integer.parseInt(suma)+puntaje1;
-        Log.e("suma",""+numSuma);
+        if(puntaje1 > 10 || puntaje1 < 0){
+
+            Toast.makeText(this,"Digite un número del 0 al 10",Toast.LENGTH_LONG).show();
+        } else {
 
 
-        float total = (float)numSuma/numVotantes;
+            int numVotantes = Integer.parseInt(votantes)+1;
+            
+            int numSuma = Integer.parseInt(suma)+puntaje1;
 
-        Log.e("total",""+total);
+            float total = (float)numSuma/numVotantes;
 
-        DatabaseReference ref = db.getReference().child("preguntas").child("actuales").child(idRecibido);
+            float resultado = Math.round(total);
 
-        String textVotantes = String.valueOf(numVotantes);
-        String textSuma = String.valueOf(numSuma);
-        String textTotal = String.valueOf(total);
+            DatabaseReference ref = db.getReference().child("preguntas").child("actuales").child(idRecibido);
 
-        Question que = new Question(
+            String textVotantes = String.valueOf(numVotantes);
+            String textSuma = String.valueOf(numSuma);
+            String textTotal = String.valueOf(resultado);
 
-                idRecibido,
-                pregunta,
-                textTotal,
-                textSuma,
-                textVotantes
+            Question que = new Question(
 
-        );
+                    idRecibido,
+                    pregunta,
+                    textTotal,
+                    textSuma,
+                    textVotantes
 
-        ref.setValue(que);
+            );
+
+            ref.setValue(que);
+
+        }
+
+
 
 
 
