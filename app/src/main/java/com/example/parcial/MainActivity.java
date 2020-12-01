@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             int numVotantes = Integer.parseInt(votantes)+1;
-            
+
             int numSuma = Integer.parseInt(suma)+puntaje1;
 
             float total = (float)numSuma/numVotantes;
